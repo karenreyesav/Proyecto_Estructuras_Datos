@@ -1,17 +1,38 @@
 import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Stack;
 
 public class Ventas {
     // Pila para recordar qué producto se vendió
     private Stack<Producto> historialProductos;
     // Pila paralela para recordar cuántas unidades se vendieron en esa transacción
     private Stack<Integer> historialCantidades;
+    //Historial de ventas con fecha
+    private ArrayList<RegistroVenta> historialVentas;
 
     public Ventas() {
         this.historialProductos = new Stack<>();
         this.historialCantidades = new Stack<>();
+        this.historialVentas = new ArrayList<>();
+    }
+    //Clase interna 
+    public static class RegistroVenta {
+        private LocalDate fecha;
+        private int cantidad;
+        private Producto producto;
+
+        public RegistroVenta(LocalDate fecha, int cantidad, Producto producto) {
+            this.fecha = fecha;
+            this.cantidad = cantidad;
+            this.producto = producto;
+        }
+        //getters
+        public LocalDate getFecha() { return fecha; }
+        public int getCantidad() { return cantidad; }
+        public Producto getProducto() { return producto; }
     }
 
-    public void realizarVenta(Producto productoParaVender, int cantidadSolicitada) {
+    public void realizarVenta(Producto productoParaVender, int cantidadSolicitada, , LocalDate fecha) {
         if (productoParaVender.getStockActual() >= cantidadSolicitada) {
             // 1. Reducir el stock físicamente en el objeto producto
             productoParaVender.vender(cantidadSolicitada);
@@ -42,5 +63,9 @@ public class Ventas {
         } else {
             System.out.println("ℹ️ No hay ventas recientes para deshacer.");
         }
+    }
+    //Getter de la clase para Prediccion Demanda 
+    public ArrayList<RegistroVenta> getHistorialVentas() {
+        return historialVentas;
     }
 }
